@@ -16,9 +16,9 @@ async function main() {
 
     try {
         const diff = await gitHubService.fetchPRDiff(repo, prNumber, githubToken)
-        log.debug('Fetched PR Diff:', diff)
+        log.debug('Fetched PR Diff: %s', diff)
     } catch (error) {
-        log.error('PR Review Action failed:', error.message)
+        log.error('PR Review Action failed: %s', error.message)
         throw error
     }
 }
