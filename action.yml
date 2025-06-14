@@ -5,10 +5,16 @@ inputs:
   pr_number:
     description: 'The Pull Request number'
     required: true
+  repository:
+    description: 'The Github repository'
+    required: true
+  token:
+    description: 'The Github token to use'
+    required: true
 runs:
   using: 'docker'
   image: 'Dockerfile'
   env:
     PR_NUMBER: ${{ inputs.pr_number }}
-    GITHUB_TOKEN: ${{ github.token }}
-    GITHUB_REPOSITORY: ${{ github.repository }}
+    GITHUB_TOKEN: ${{ inputs.token }}
+    GITHUB_REPOSITORY: ${{ inputs.repository }}
