@@ -1,0 +1,13 @@
+# action.yml
+name: 'AI Code review'
+description: 'Uses AI to provide assisted summarisation and feedback for Pull requests'
+inputs:
+  temp:
+    description: 'TODO'
+    required: false
+    default: '.'
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+  env:
+    TEMP: TODO
