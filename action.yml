@@ -2,12 +2,11 @@
 name: 'AI Code review'
 description: 'Uses AI to provide assisted summarisation and feedback for Pull requests'
 inputs:
-  temp:
-    description: 'TODO'
-    required: false
-    default: '.'
+  pr_number:
+    description: 'The Pull Request number'
+    required: true
 runs:
   using: 'docker'
   image: 'Dockerfile'
   env:
-    TEMP: TODO
+    PR_NUMBER: ${{ inputs.pr_number }}
