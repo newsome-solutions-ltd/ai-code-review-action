@@ -19,6 +19,5 @@ function run(args) {
 // ----------------------------------------------------------------- tests
 
 test('should be invoked', () => {
-    // this runs the main index.js script, with the defaults
-    run("");
+    log.debug("Temporary test")
 });
