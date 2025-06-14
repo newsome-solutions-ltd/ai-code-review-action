@@ -3,7 +3,7 @@ const winston = require('winston');
 const loggerFactory = {
     createLogger: () => {
         return winston.createLogger({
-            level: 'info',
+            level: 'debug',
             format: winston.format.simple(),
             transports: [new winston.transports.Console(), new winston.transports.File({filename: './output.log'})]
         });
