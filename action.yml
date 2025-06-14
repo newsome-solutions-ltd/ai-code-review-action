@@ -11,7 +11,7 @@ inputs:
   token:
     description: 'The Github token to use'
     required: true
-  openapi_key:
+  openai_api_key:
     description: 'The OpenAPI API key'
     required: true
 runs:
@@ -21,4 +21,4 @@ runs:
     PR_NUMBER: ${{ inputs.pr_number }}
     GITHUB_TOKEN: ${{ inputs.token }}
     GITHUB_REPOSITORY: ${{ inputs.repository }}
-    OPENAPI_KEY: ${{ inputs.openapi_key }}
+    OPENAI_API_KEY: ${{ inputs.openai_api_key }}

@@ -21,4 +21,4 @@ RUN chmod 755 -R /app && \
 COPY entrypoint.sh /app/entrypoint.sh
 RUN chmod 750 /app/entrypoint.sh
 
-ENTRYPOINT "/app/entrypoint.sh"
+ENTRYPOINT ["/app/entrypoint.sh"]

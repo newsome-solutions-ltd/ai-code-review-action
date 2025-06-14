@@ -3,7 +3,7 @@
 
 const loggerFactory = require("./LoggerFactory")
 const gitHubService = require("./github/GitHubService")
-const OpenAI = require("./openapi/OpenAPI")
+const OpenAI = require("./openai/OpenAI")
 
 const log = loggerFactory.createLogger()
 
@@ -11,12 +11,12 @@ async function main() {
     const repo = process.env.GITHUB_REPOSITORY
     const prNumber = process.env.PR_NUMBER
     const githubToken = process.env.GITHUB_TOKEN
-    const openApiKey = process.env.OPENAPI_KEY
+    const openAiApiKey = process.env.OPENAI_API_KEY
 
     const greeting = `Invoking AI code review [repository: ${repo}, pr: #${prNumber}]...`
     log.debug(greeting)
 
-    const openai = new OpenAI(openApiKey)
+    const openai = new OpenAI(openAiApiKey)
 
     try {
         const diff = await gitHubService.fetchPRDiff(repo, prNumber, githubToken)
