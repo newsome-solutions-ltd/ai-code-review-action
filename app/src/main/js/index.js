@@ -13,6 +13,11 @@ async function main() {
     const githubToken = process.env.GITHUB_TOKEN
     const openAiApiKey = process.env.OPENAI_API_KEY
 
+    if (!openAiApiKey || openAiApiKey.length == 0) {
+        log.error("❌ Missing OPENAI_API_KEY environment variable");
+        process.exit(1);
+    }
+
     const greeting = `Invoking AI code review [repository: ${repo}, pr: #${prNumber}]...`
     log.debug(greeting)
 
