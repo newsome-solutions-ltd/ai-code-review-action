@@ -11,6 +11,9 @@ inputs:
   token:
     description: 'The Github token to use'
     required: true
+  openapi_key:
+    description: 'The OpenAPI API key'
+    required: true
 runs:
   using: 'docker'
   image: 'Dockerfile'
@@ -18,3 +21,4 @@ runs:
     PR_NUMBER: ${{ inputs.pr_number }}
     GITHUB_TOKEN: ${{ inputs.token }}
     GITHUB_REPOSITORY: ${{ inputs.repository }}
+    OPENAPI_KEY: ${{ inputs.openapi_key }}
