@@ -3,7 +3,7 @@ name: 'Master build'
 on:
   push:
     branches:
-      - 'main'
+      - 'disabled' # TODO set to 'main' to enable
 
 run-name: 'Master build #${{github.run_number}}'
 
