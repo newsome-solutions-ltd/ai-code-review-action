@@ -8,7 +8,7 @@ class OpenAI {
      * Sends a PR diff to OpenAI for review comments and summarization.
      * @param {string} diffText - The full diff of the PR
      * @param {string} model - Optional: OpenAI model to use (default: gpt-4)
-     * @param {number} max_tokens - Max number of tokens
+     * @param {number} max_tokens - Max number of tokens (default: 1500)
      * @returns {Promise<string>} - The AI-generated review comments
      */
     aiCodeReview = async (diffText, model = 'gpt-4', max_tokens = 1500) => {

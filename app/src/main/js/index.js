@@ -22,7 +22,7 @@ async function main() {
         const diff = await gitHubService.fetchPRDiff(repo, prNumber, githubToken)
         log.debug(`Fetched PR Diff: ${diff}`)
 
-        const aiResponse = openai.aiCodeReview(diff)
+        const aiResponse = await openai.aiCodeReview(diff)
         log.debug(`OpenAPI response: ${aiResponse}`)
     } catch (error) {
         log.error(`PR Review Action failed: ${error.message}`)
