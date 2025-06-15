@@ -13,12 +13,20 @@ class OpenAI {
      */
     aiCodeReview = async (diffText, model = 'gpt-4', max_tokens = 1500) => {
         const prompt = `
-        You are an expert code reviewer. Analyze the following GitHub pull request diff and provide:
-        1. A summary of what this PR does.
-        2. Any high-level concerns or recommendations.
-        3. If appropriate, inline comments with filename, line number, and feedback.
-
-        Respond in markdown. Here's the diff:
+        You're a senior code reviewer. Analyze the following unified GitHub diff and respond in this exact JSON format:
+        {
+        "summary": "One-paragraph summary of what this PR does",
+        "comments": [
+            {
+            "file": "relative/path/to/file.js",
+            "line": 42,
+            "body": "Your feedback for this line"
+            },
+            ...
+        ]
+        }
+        Only include real feedback, and only reference lines that appear in the diff.
+        Here is the diff:
         \`\`\`diff
         ${diffText}
         \`\`\`
