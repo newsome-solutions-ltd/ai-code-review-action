@@ -28,8 +28,7 @@ async function main() {
         // log.debug(`Fetched PR Diff: ${diff}`)
 
         //const aiResponse = await openai.aiCodeReview(diff)
-        const aiResponse = `
-        {
+        const review = {
             "summary": "This PR introduces an AI code review step in the GitHub workflow and makes a minor formatting change in the pom.xml file. The build step in the workflow has been commented out.",
             "comments": [
                 {
@@ -54,10 +53,8 @@ async function main() {
                 }
             ]
         }
-        `
-        const review = JSON.parse(aiResponse)
         log.debug(`OpenAPI response: ${JSON.stringify(review)}`)
-        gitHubService.addPRComment(repo, prNumber, githubToken, aiResponse, review.summary, review.comments)
+        gitHubService.addPRComment(repo, prNumber, githubToken, review.summary, review.comments)
     } catch (error) {
         log.error(`PR Review Action failed: ${error.message}`)
         throw error
