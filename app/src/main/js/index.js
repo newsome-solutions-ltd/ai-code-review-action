@@ -55,7 +55,7 @@ async function main() {
             ]
         }
         log.debug(`OpenAPI response: ${JSON.stringify(review)}`)
-        await gitHubService.addLabelToPR(repo, prNumber, githubToken, label)
+        await gitHubService.addLabelsToPR(repo, prNumber, githubToken, [label])
         // await gitHubService.addPRComment(repo, prNumber, githubToken, review.summary, review.comments)
     } catch (error) {
         log.error(`PR Review Action failed: ${error.message}`)
