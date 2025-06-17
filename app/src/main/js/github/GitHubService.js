@@ -63,7 +63,7 @@ var gitHubService = {
      * @param {string[]} labels - Array of label names to add
      */
     addLabelsToPR: async function (repo, prNumber, githubToken, labels) {
-        log.debug(`Adding labels [${label}] to repo PR [${repo}#${prNumber}]`)
+        log.debug(`Adding labels [${labels}] to repo PR [${repo}#${prNumber}]`)
         await axios.post(
             `https://api.github.com/repos/${repo}/issues/${prNumber}/labels`,
             { labels },
