@@ -26,6 +26,33 @@ var gitHubService = {
             log.error('Error fetching PR diff:', error.response?.data || error.message);
             throw new Error('Failed to fetch PR diff');
         }
+    },
+
+    addPRComment: async function (repo, prNumber, githubToken, summary, lineComments) {
+
+        const comments = lineComments.map(comment => ({
+            path: comment.file,
+            body: comment.body,
+            line: comment.line,
+            side: 'RIGHT' // 'RIGHT' for new line, 'LEFT' for original
+        }));
+
+        const payload = {
+            body: `### 🧠 AI Review Summary\n\n${summary}`,
+            event: 'COMMENT', // or 'APPROVE' if you want it to auto-approve
+            comments
+        };
+
+        await axios.post(
+            `https://api.github.com/repos/${repo}/pulls/${prNumber}/reviews`,
+            payload,
+            {
+            headers: {
+                Authorization: `Bearer ${githubToken}`,
+                Accept: 'application/vnd.github.v3+json'
+            }
+            }
+        );
     }
 }
 

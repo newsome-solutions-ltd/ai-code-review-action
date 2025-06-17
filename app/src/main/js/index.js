@@ -24,11 +24,39 @@ async function main() {
     const openai = new OpenAI(openAiApiKey)
 
     try {
-        const diff = await gitHubService.fetchPRDiff(repo, prNumber, githubToken)
-        log.debug(`Fetched PR Diff: ${diff}`)
+        // const diff = await gitHubService.fetchPRDiff(repo, prNumber, githubToken)
+        // log.debug(`Fetched PR Diff: ${diff}`)
 
-        const aiResponse = await openai.aiCodeReview(diff)
-        log.debug(`OpenAPI response: ${aiResponse}`)
+        //const aiResponse = await openai.aiCodeReview(diff)
+        const aiResponse = JSON.parse(```
+{
+    "summary": "This PR introduces an AI code review step in the GitHub workflow and makes a minor formatting change in the pom.xml file. The build step in the workflow has been commented out.",
+    "comments": [
+        {
+            "file": ".github/workflows/build_pr.yml",
+            "line": 12,
+            "body": "The environment variable 'OPENAI_API_KEY' is being set here. Make sure the secret is properly set in the GitHub repository settings."
+        },
+        {
+            "file": ".github/workflows/build_pr.yml",
+            "line": 23,
+            "body": "The 'ai-code-review-action' is being used here. Ensure that this action is properly tested and reliable for use in production workflows."
+        },
+        {
+            "file": ".github/workflows/build_pr.yml",
+            "line": 32,
+            "body": "The build step has been commented out. If this is intentional and the build process is handled elsewhere, ignore this comment. Otherwise, it might be an oversight."
+        },
+        {
+            "file": "pom.xml",
+            "line": 7,
+            "body": "A minor formatting change has been made here. If this is unintentional, it might be good to revert it to keep the commit history clean."
+        }
+    ]
+}
+        ```)
+        log.debug(`OpenAPI response: ${JSON.stringify(aiResponse)}`)
+        gitHubService.addPRComment(repo, prNumber, githubToken, aiResponse, aiResponse.summary, aiResponse.comments)
     } catch (error) {
         log.error(`PR Review Action failed: ${error.message}`)
         throw error
