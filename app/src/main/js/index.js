@@ -56,7 +56,7 @@ async function main() {
         }
         `
         const review = JSON.parse(aiResponse)
-        log.debug(`OpenAPI response: ${review}`)
+        log.debug(`OpenAPI response: ${JSON.stringify(review)}`)
         gitHubService.addPRComment(repo, prNumber, githubToken, aiResponse, review.summary, review.comments)
     } catch (error) {
         log.error(`PR Review Action failed: ${error.message}`)
