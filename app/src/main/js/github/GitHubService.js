@@ -47,13 +47,34 @@ var gitHubService = {
             `https://api.github.com/repos/${repo}/pulls/${prNumber}/reviews`,
             payload,
             {
-            headers: {
-                Authorization: `Bearer ${githubToken}`,
-                Accept: 'application/vnd.github.v3+json'
+                headers: {
+                    Authorization: `Bearer ${githubToken}`,
+                    Accept: 'application/vnd.github.v3+json'
+                }
             }
+        );
+    },
+
+    /**
+     * Adds a label to a pull request
+     * @param {string} repo - Format: owner/repo
+     * @param {number} prNumber - Pull request number
+     * @param {string} githubToken - GitHub token
+     * @param {string[]} labels - Array of label names to add
+     */
+    addLabelToPR: async function (repo, prNumber, githubToken, labels) {
+        await axios.post(
+            `https://api.github.com/repos/${repo}/issues/${prNumber}/labels`,
+            { labels },
+            {
+                headers: {
+                    Authorization: `Bearer ${githubToken}`,
+                    Accept: 'application/vnd.github.v3+json'
+                }
             }
         );
     }
+
 }
 
 module.exports = gitHubService;

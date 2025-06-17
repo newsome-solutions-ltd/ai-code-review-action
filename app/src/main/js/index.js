@@ -54,7 +54,8 @@ async function main() {
             ]
         }
         log.debug(`OpenAPI response: ${JSON.stringify(review)}`)
-        gitHubService.addPRComment(repo, prNumber, githubToken, review.summary, review.comments)
+        gitHubService.addLabelToPR(repo, prNumber, githubToken, "ai-reviewed")
+        // gitHubService.addPRComment(repo, prNumber, githubToken, review.summary, review.comments)
     } catch (error) {
         log.error(`PR Review Action failed: ${error.message}`)
         throw error
