@@ -28,7 +28,7 @@ async function main() {
         // log.debug(`Fetched PR Diff: ${diff}`)
 
         //const aiResponse = await openai.aiCodeReview(diff)
-        const aiResponse = ```
+        const aiResponse = `
         {
             "summary": "This PR introduces an AI code review step in the GitHub workflow and makes a minor formatting change in the pom.xml file. The build step in the workflow has been commented out.",
             "comments": [
@@ -54,7 +54,7 @@ async function main() {
                 }
             ]
         }
-        ```
+        `
         const review = JSON.parse(aiResponse)
         log.debug(`OpenAPI response: ${aiResponse}`)
         gitHubService.addPRComment(repo, prNumber, githubToken, aiResponse, review.summary, review.comments)
