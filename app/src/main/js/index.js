@@ -31,7 +31,7 @@ async function main() {
         const review = await openai.aiCodeReview(diff)
         log.debug(`OpenAPI response: ${JSON.stringify(review)}`)
         await gitHubService.addLabelsToPR(repo, prNumber, githubToken, [label])
-        // await gitHubService.addPRComment(repo, prNumber, githubToken, review.summary, review.comments)
+        await gitHubService.addPRComment(repo, prNumber, githubToken, review.summary, review.comments)
     } catch (error) {
         log.error(`PR Review Action failed: ${error.message}`)
         throw error
