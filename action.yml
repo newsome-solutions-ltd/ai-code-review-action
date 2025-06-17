@@ -14,6 +14,9 @@ inputs:
   openai_api_key:
     description: 'The OpenAPI API key'
     required: true
+  reviewed_label:
+    description: 'The label to add after reviewing'
+    required: false
 runs:
   using: 'docker'
   image: 'Dockerfile'
@@ -22,3 +25,4 @@ runs:
     GITHUB_TOKEN: ${{ inputs.token }}
     GITHUB_REPOSITORY: ${{ inputs.repository }}
     OPENAI_API_KEY: ${{ inputs.openai_api_key }}
+    REVIEWED_LABEL: ${{ inputs.reviewed_label }}

@@ -12,6 +12,7 @@ async function main() {
     const prNumber = process.env.PR_NUMBER
     const githubToken = process.env.GITHUB_TOKEN
     const openAiApiKey = process.env.OPENAI_API_KEY
+    const label = process.env.REVIEWED_LABEL || "ai-reviewed"
 
     if (!openAiApiKey || openAiApiKey.length == 0) {
         log.error("❌ Missing OPENAI_API_KEY environment variable");
@@ -54,8 +55,8 @@ async function main() {
             ]
         }
         log.debug(`OpenAPI response: ${JSON.stringify(review)}`)
-        gitHubService.addLabelToPR(repo, prNumber, githubToken, "ai-reviewed")
-        // gitHubService.addPRComment(repo, prNumber, githubToken, review.summary, review.comments)
+        await gitHubService.addLabelToPR(repo, prNumber, githubToken, label)
+        // await gitHubService.addPRComment(repo, prNumber, githubToken, review.summary, review.comments)
     } catch (error) {
         log.error(`PR Review Action failed: ${error.message}`)
         throw error
