@@ -14,6 +14,8 @@ async function main() {
     const githubToken = process.env.GITHUB_TOKEN
     const openAiApiKey = process.env.OPENAI_API_KEY
     const label = process.env.REVIEWED_LABEL || "ai-reviewed"
+    const model = process.env.OPENAI_MODEL
+    const maxTokens = process.env.OPENAI_MAX_TOKENS
 
     if (!openAiApiKey || openAiApiKey.length == 0) {
         log.error("❌ Missing OPENAI_API_KEY environment variable");
@@ -29,7 +31,7 @@ async function main() {
         const diff = await gitHubService.fetchPRDiff(repo, prNumber, githubToken)
         log.debug(`Fetched PR Diff: ${diff}`)
 
-        const review = await openai.aiCodeReview(diffTransformer.transformDiffForModel(diff))
+        const review = await openai.aiCodeReview(diffTransformer.transformDiffForModel(diff), model, maxTokens)
         log.debug(`OpenAPI response: ${JSON.stringify(review)}`)
         await gitHubService.addLabelsToPR(repo, prNumber, githubToken, [label])
         await gitHubService.addPRComment(repo, prNumber, githubToken, review.summary, review.comments)

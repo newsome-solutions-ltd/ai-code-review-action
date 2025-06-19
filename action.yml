@@ -14,6 +14,12 @@ inputs:
   openai_api_key:
     description: 'The OpenAPI API key'
     required: true
+  openai_model:
+    description: 'The OpenAPI model to use'
+    required: false
+  openai_max_tokens:
+    description: 'The max number of tokens to return in the code review response'
+    required: false
   reviewed_label:
     description: 'The label to add after reviewing'
     required: false
@@ -25,4 +31,6 @@ runs:
     GITHUB_TOKEN: ${{ inputs.token }}
     GITHUB_REPOSITORY: ${{ inputs.repository }}
     OPENAI_API_KEY: ${{ inputs.openai_api_key }}
+    OPENAI_MODEL: ${{ inputs.openai_model }}
+    OPENAI_MAX_TOKENS: ${{ inputs.openai_max_tokens }}
     REVIEWED_LABEL: ${{ inputs.reviewed_label }}
