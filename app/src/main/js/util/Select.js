@@ -4,15 +4,20 @@ class Selector {
         this.pipeline = (v) => v
     }
     map(func) {
-        this.pipeline = (v) => this.pipeline(func(v))
+        const subpipeline = this.pipeline
+        this.pipeline = (v) => subpipeline(func(v))
         return this
     }
     filter(predicate) {
-        this.pipeline = (v) => (predicate(v)) ? this.pipeline(v) : null
+        const subpipeline = this.pipeline
+        this.pipeline = (v) => (predicate(v)) ? subpipeline(v) : null
         return this
     }
     orElse(otherValue) {
        return this.pipeline(this.value) ?? otherValue
+    }
+    orNull() {
+       return this.orElse(null)
     }
 }
 
