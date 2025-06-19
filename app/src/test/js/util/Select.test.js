@@ -52,4 +52,14 @@ describe('Select', () => {
         expect(selected.orNull()).toEqual(expected)
     })
 
+    it("should respect order of transformations", () => {
+        var selected = select("123").filter(v => v.startsWith("1")).map(parseInt).orNull()
+        expect(selected).toEqual(123)
+    })
+
+    it("should respect order of transformations 2", () => {
+        var selected = select("123").map(parseInt).filter(v => v > 100).orNull()
+        expect(selected).toEqual(123)
+    })
+
 });

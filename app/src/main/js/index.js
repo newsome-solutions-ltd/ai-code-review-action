@@ -9,11 +9,16 @@ const select = require("./util/Select")
 
 const log = loggerFactory.createLogger()
 
-const isNotEmpty = s => s?.trim().length > 0
+const isNotEmpty = s => s?.trim().length > 0;
 const isNotNull = o => o != undefined && o != null
 const validate = (value, validator, message) => {
-    if (!validator(value)) {
-        log.error(`❌ ${message} [value: ${value}]`);
+    try {
+        if (!validator(value)) {
+            log.error(`❌ ${message} [value: ${value}]`);
+            process.exit(1);
+        }
+    } catch (error) {
+        log.error(`❌ ${message} [value: ${value}] - error occurred ${JSON.stringify(error)}`);
         process.exit(1);
     }
 }

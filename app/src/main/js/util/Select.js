@@ -5,7 +5,7 @@ class Selector {
     }
     map(func) {
         const subpipeline = this.pipeline
-        this.pipeline = (v) => subpipeline(func(v))
+        this.pipeline = (v) => func(subpipeline(v))
         return this
     }
     filter(predicate) {
