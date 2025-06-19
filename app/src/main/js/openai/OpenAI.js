@@ -11,7 +11,7 @@ class OpenAI {
      * @param {number} max_tokens - Max number of tokens (default: 1500)
      * @returns {Promise<string>} - The AI-generated review comments
      */
-    aiCodeReview = async (diffText, model = 'gpt-3.5', max_tokens = 1500) => {
+    aiCodeReview = async (diffText, model = 'gpt-3.5-turbo', max_tokens = 1500) => {
         const prompt = `
         Analyze the diff and respond in this exact JSON format:
         {
