@@ -32,9 +32,7 @@ class OpenAI {
         Only include real feedback, and only reference lines that appear in the diff.
         Each line in the diff will state the file, the type ('+' for additions, '-' for deletions), and line number, followed by the line content.
         Here is the diff:
-        \`\`\`diff
         ${diffText}
-        \`\`\`
         `;
 
         try {
