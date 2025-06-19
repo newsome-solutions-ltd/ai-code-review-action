@@ -15,8 +15,9 @@
   "author": "Andrew Newsome",
   "license": "MIT",
   "dependencies": {
-    "winston": "^3.8.2",
-    "axios": "1.10.0"
+    "axios": "1.10.0",
+    "unidiff": "^1.0.4",
+    "winston": "^3.8.2"
   },
   "devDependencies": {
     "eslint": "^8.28.0",

@@ -34,7 +34,7 @@ var gitHubService = {
             path: comment.file,
             body: comment.body,
             line: comment.line,
-            side: 'RIGHT' // 'RIGHT' for new line, 'LEFT' for original
+            side: (lineComments.side == 'OLD') ? 'LEFT' : 'RIGHT' // 'RIGHT' for new line, 'LEFT' for original
         }));
 
         const payload = {

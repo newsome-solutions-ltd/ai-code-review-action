@@ -4,6 +4,7 @@
 const loggerFactory = require("./LoggerFactory")
 const gitHubService = require("./github/GitHubService")
 const OpenAI = require("./openai/OpenAI")
+const diffTransformer = require("./DiffTransformer")
 
 const log = loggerFactory.createLogger()
 
@@ -28,7 +29,7 @@ async function main() {
         const diff = await gitHubService.fetchPRDiff(repo, prNumber, githubToken)
         log.debug(`Fetched PR Diff: ${diff}`)
 
-        const review = await openai.aiCodeReview(diff)
+        const review = await openai.aiCodeReview(diffTransformer.transformDiffForModel(diff))
         log.debug(`OpenAPI response: ${JSON.stringify(review)}`)
         await gitHubService.addLabelsToPR(repo, prNumber, githubToken, [label])
         await gitHubService.addPRComment(repo, prNumber, githubToken, review.summary, review.comments)

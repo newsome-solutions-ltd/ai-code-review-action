@@ -11,21 +11,23 @@ class OpenAI {
      * @param {number} max_tokens - Max number of tokens (default: 1500)
      * @returns {Promise<string>} - The AI-generated review comments
      */
-    aiCodeReview = async (diffText, model = 'gpt-4', max_tokens = 1500) => {
+    aiCodeReview = async (diffText, model = 'gpt-3.5', max_tokens = 1500) => {
         const prompt = `
-        You're a senior code reviewer. Analyze the following unified GitHub diff and respond in this exact JSON format:
+        Analyze the diff and respond in this exact JSON format:
         {
         "summary": "One-paragraph summary of what this PR does",
         "comments": [
             {
             "file": "relative/path/to/file.js",
             "line": 42,
-            "body": "Your feedback for this line"
+            "body": "Your feedback for this line",
+            "side": "OLD if type is '-' and NEW if type is '+'
             },
             ...
         ]
         }
         Only include real feedback, and only reference lines that appear in the diff.
+        Each line in the diff will state the file, the type ('+' for additions, '-' for deletions), and line number, followed by the line content.
         Here is the diff:
         \`\`\`diff
         ${diffText}
@@ -40,7 +42,7 @@ class OpenAI {
                     messages: [
                         {
                             role: 'system',
-                            content: 'You are a helpful and concise code reviewer.',
+                            content: 'You are an expert sooftware engineer and code reviewer.',
                         },
                         {
                             role: 'user',
