@@ -43,7 +43,7 @@ async function main() {
     validate(config.githubToken, isNotEmpty, "Invalid token parameter")
     validate(config.openAiApiKey, isNotEmpty, "Invalid openai_api_key parameter")
 
-    const greeting = `Invoking AI code review [repository: ${repo}, pr: #${prNumber}]...`
+    const greeting = `Invoking AI code review [repository: ${config.repo}, pr: #${config.prNumber}]...`
     log.debug(greeting)
 
     const openai = new OpenAI(config.openAiApiKey)
