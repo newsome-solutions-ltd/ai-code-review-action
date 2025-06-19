@@ -21,7 +21,7 @@ class OpenAI {
             "file": "relative/path/to/file.js",
             "line": 42,
             "body": "Your feedback for this line",
-            "side": "OLD if type is '-' and NEW if type is '+'
+            "side": "OLD if type is '-' and NEW if type is '+'"
             },
             ...
         ]
