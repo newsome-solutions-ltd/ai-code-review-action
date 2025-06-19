@@ -1,8 +1,11 @@
 const axios = require('axios');
+const loggerFactory = require('../LoggerFactory')
+
+const log = loggerFactory.createLogger()
 
 class OpenAI {
     constructor(apiKey) {
-        this.apiKey = apiKey;
+        this.apiKey = apiKey
     }
     /**
      * Sends a PR diff to OpenAI for review comments and summarization.
@@ -59,10 +62,13 @@ class OpenAI {
                     },
                 }
             );
+            log.debug("===========================")
+            log.debug("# OpenAI response cata...")
+            log.debug(response.data)
 
             return JSON.parse(response.data.choices[0].message.content);
         } catch (error) {
-            console.error('Failed to fetch AI review:', error.response?.data || error.message);
+            log.error('Failed to fetch AI review:', error.response?.data || error.message);
             throw new Error('AI Code Review API request failed.');
         }
     }
