@@ -37,7 +37,7 @@ class OpenAI {
         Here is the diff:
         ${diffText}
         `;
-
+        log.info(`Model is [${model}]`)
 
         try {
             const response = await axios.post(
@@ -55,7 +55,7 @@ class OpenAI {
                         },
                     ],
                     temperature: 0.3,
-                    max_tokens: max_tokens ?? defaultTokenCount,
+                    max_tokens: max_tokens ?? defaultModel,
                     response_format: { "type": "json_object" }
                 },
                 {
