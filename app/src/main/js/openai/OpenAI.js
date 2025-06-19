@@ -63,8 +63,8 @@ class OpenAI {
                 }
             );
             log.debug("===========================")
-            log.debug("# OpenAI response cata...")
-            log.debug(response.data)
+            log.debug("# OpenAI response data...")
+            log.debug(JSON.stringify(response.data))
 
             return JSON.parse(response.data.choices[0].message.content);
         } catch (error) {
