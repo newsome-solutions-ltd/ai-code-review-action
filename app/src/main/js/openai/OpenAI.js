@@ -3,6 +3,9 @@ const loggerFactory = require('../LoggerFactory')
 
 const log = loggerFactory.createLogger()
 
+const defaultModel = 'gpt-4o'
+const defaultTokenCount = 1500
+
 class OpenAI {
     constructor(apiKey) {
         this.apiKey = apiKey
@@ -14,7 +17,7 @@ class OpenAI {
      * @param {number} max_tokens - Max number of tokens (default: 1500)
      * @returns {Promise<string>} - The AI-generated review comments
      */
-    aiCodeReview = async (diffText, model = 'gpt-4o', max_tokens = 1500) => {
+    aiCodeReview = async (diffText, model = defaultModel, max_tokens = defaultTokenCount) => {
         const prompt = `
         Analyze the diff and respond in this exact JSON format:
         {
@@ -35,11 +38,12 @@ class OpenAI {
         ${diffText}
         `;
 
+
         try {
             const response = await axios.post(
                 'https://api.openai.com/v1/chat/completions',
                 {
-                    model,
+                    model: model ?? defaultModel,
                     messages: [
                         {
                             role: 'system',
@@ -51,7 +55,7 @@ class OpenAI {
                         },
                     ],
                     temperature: 0.3,
-                    max_tokens: max_tokens,
+                    max_tokens: max_tokens ?? defaultTokenCount,
                     response_format: { "type": "json_object" }
                 },
                 {
