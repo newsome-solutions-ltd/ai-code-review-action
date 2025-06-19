@@ -37,7 +37,8 @@ class OpenAI {
         Here is the diff:
         ${diffText}
         `;
-        log.info(`Model is [${model}]`)
+        
+        model = model?.length > 0 ? model : null;
 
         try {
             const response = await axios.post(

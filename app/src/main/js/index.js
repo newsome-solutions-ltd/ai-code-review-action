@@ -15,7 +15,7 @@ async function main() {
     const openAiApiKey = process.env.OPENAI_API_KEY
     const label = process.env.REVIEWED_LABEL || "ai-reviewed"
     const model = process.env.OPENAI_MODEL
-    const maxTokens = process.env.OPENAI_MAX_TOKENS
+    const maxTokens = (process.env.OPENAI_MAX_TOKENS) ? parseInt(process.env.OPENAI_MAX_TOKENS) : 1500
 
     if (!openAiApiKey || openAiApiKey.length == 0) {
         log.error("❌ Missing OPENAI_API_KEY environment variable");
