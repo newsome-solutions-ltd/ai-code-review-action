@@ -20,7 +20,7 @@ class StopWatch {
     isStarted() {
         return this.started != null
     }
-    isStarted() {
+    isStopped() {
         return this.stopped != null
     }
     getTime() {

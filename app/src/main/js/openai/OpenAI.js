@@ -74,13 +74,15 @@ class OpenAI {
             const timeInMs = stopWatch.stop().getTime()
             log.info(`OpenAI response received. Time elapsed: ${timeInMs} ms`);
 
-            log.debug("===========================")
-            log.debug("# OpenAI response data...")
-            log.debug(JSON.stringify(response.data))
+            if (log.isDebugEnabled()) {
+                log.debug("===========================")
+                log.debug("# OpenAI response data...")
+                log.debug(JSON.stringify(response.data))
+            }
 
             return JSON.parse(response.data.choices[0].message.content);
         } catch (error) {
-            log.error('Failed to fetch AI review:', error.response?.data || error.message);
+            log.error('❌ Failed to fetch AI review:', JSON.stringify(error));
             throw new Error('AI Code Review API request failed.');
         }
     }
