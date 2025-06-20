@@ -1,8 +1,10 @@
 const winston = require('winston');
+const actions = require('@actions/core');
 
 const loggerFactory = {
     createLogger: () => {
-        const level = (process.env.LOG_LEVEL?.length > 0) ? process.env.LOG_LEVEL : 'info';
+        const input = actions.getInput('log_level');
+        const level = (input?.length > 0) ? input : 'info';
         return winston.createLogger({
             level: level,
             format: winston.format.simple(),

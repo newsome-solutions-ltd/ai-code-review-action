@@ -37,7 +37,7 @@ describe('Select', () => {
         [123, [v => v > 100, v => v > 200], null]
     ])('should support multiple filters', (value, filters, expected) => {
         var selected = select(value)
-        for (f of filters) {
+        for (var f of filters) {
             selected = selected.filter(f)
         }
         expect(selected.orNull()).toEqual(expected)
@@ -47,7 +47,7 @@ describe('Select', () => {
         [123, [v => v + 3, v => v + 100], 226]
     ])('should support multiple mappings', (value, mappings, expected) => {
         var selected = select(value)
-        for (m of mappings) {
+        for (var m of mappings) {
             selected = selected.map(m)
         }
         expect(selected.orNull()).toEqual(expected)

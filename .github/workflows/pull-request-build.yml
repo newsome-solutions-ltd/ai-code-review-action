@@ -31,4 +31,21 @@ jobs:
       - 
         name: Test
         run: npm test
+      - 
+        name: Check dist
+        run: |
+          npx ncc build src/main/js/index.js -o tmp --minify
+          actual_hash=$(md5 -q dist/index.js)
+          expected_hash=$(md5 -q tmp/index.js)
+
+          echo "Expected hash: $expected_hash"
+          echo "Actual hash:   $actual_hash"
+
+          if [ "$expected_hash" != "$actual_hash" ]; then
+            echo "❌ The dist/index.js file is out of sync with the source."
+            echo "💡 Please run \`npm run package\` and commit the result."
+            exit 1
+          else
+            echo "✅ dist/index.js is up to date."
+          fi
     

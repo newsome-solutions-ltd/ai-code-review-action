@@ -3,11 +3,6 @@
 // --------------------------------------------------------------- Imports
 
 const diffTransform = require("../../main/js/DiffTransformer");
-const loggerFactory = require("../../main/js/LoggerFactory");
-
-// ------------------------------------------------------------- Variables 
-
-const log = loggerFactory.createLogger();
 
 // ----------------------------------------------------------------- tests
 
