@@ -5,6 +5,7 @@ const log = loggerFactory.createLogger();
 
 var gitHubService = {
 
+
     /**
      * Fetches the diff of a GitHub Pull Request
      * @param {string} repo - Repository name in format "owner/repo"
@@ -38,7 +39,7 @@ var gitHubService = {
         }));
 
         const payload = {
-            body: `### 🧠 AI Review Summary\n\n${summary}`,
+            body: `### 💬 AI Review Summary\n\n${summary}`,
             event: 'COMMENT',
             comments
         };

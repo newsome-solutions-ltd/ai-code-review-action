@@ -8,7 +8,7 @@ on:
 run-name: 'Master build #${{github.run_number}}'
 
 env:
-  NODE_VERSION: '18.12.1'
+  NODE_VERSION: '20'
 
 jobs:
   build:
@@ -27,16 +27,16 @@ jobs:
         run: git fetch --tags origin
       - 
         name: Setup Node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
 
         with:
           node-version: ${{ env.NODE_VERSION }}
       - 
         name: Install Node modules
-        run: cd app/ && npm install
+        run: npm install
       - 
         name: Test
-        run: cd app/ && npm run checks && npm test
+        run: npm test
       - 
         name: Determine next version number
         id: nextVersion

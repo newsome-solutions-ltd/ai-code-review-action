@@ -6,6 +6,7 @@ const gitHubService = require("./github/GitHubService")
 const OpenAI = require("./openai/OpenAI")
 const diffTransformer = require("./DiffTransformer")
 const select = require("./util/Select")
+const actions = require('@actions/core');
 
 const log = loggerFactory.createLogger()
 
@@ -25,13 +26,13 @@ const validate = (value, validator, message) => {
 
 class Configuration {
     constructor() {
-        this.repo = process.env.GITHUB_REPOSITORY
-        this.prNumber = select(process.env.PR_NUMBER).filter(isNotEmpty).map(parseInt).orElse(null)
-        this.githubToken = process.env.GITHUB_TOKEN
-        this.openAiApiKey = process.env.OPENAI_API_KEY
-        this.label = select(process.env.REVIEWED_LABEL).filter(isNotEmpty).orElse("ai-reviewed")
-        this.model = select(process.env.OPENAI_MODEL).filter(isNotEmpty).orElse('gpt-4o')
-        this.maxTokens = select(process.env.OPENAI_MAX_TOKENS).filter(isNotEmpty).map(parseInt).orElse(1500)
+        this.repo = actions.getInput('repository')
+        this.prNumber = select(actions.getInput('pr_number')).filter(isNotEmpty).map(parseInt).orElse(null)
+        this.githubToken = actions.getInput('token')
+        this.openAiApiKey = actions.getInput('openai_api_key')
+        this.label = select(actions.getInput('reviewed_label')).filter(isNotEmpty).orElse("ai-reviewed")
+        this.model = select(actions.getInput('openai_model')).filter(isNotEmpty).orElse('gpt-4o')
+        this.maxTokens = select(actions.getInput('openai_max_tokens')).filter(isNotEmpty).map(parseInt).orElse(1500)
     }
 }
 

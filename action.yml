@@ -27,14 +27,5 @@ inputs:
     description: 'The log level. One of: error, warn, info (default), debug.'
     required: false
 runs:
-  using: 'docker'
-  image: 'Dockerfile'
-  env:
-    PR_NUMBER: ${{ inputs.pr_number }}
-    GITHUB_TOKEN: ${{ inputs.token }}
-    GITHUB_REPOSITORY: ${{ inputs.repository }}
-    OPENAI_API_KEY: ${{ inputs.openai_api_key }}
-    OPENAI_MODEL: ${{ inputs.openai_model }}
-    OPENAI_MAX_TOKENS: ${{ inputs.openai_max_tokens }}
-    REVIEWED_LABEL: ${{ inputs.reviewed_label }}
-    LOG_LEVEL: ${{ inputs.log_level }}
+  using: 'node20'
+  main: 'src/main/js/index.js'

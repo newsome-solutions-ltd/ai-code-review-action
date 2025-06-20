@@ -24,7 +24,7 @@ class StopWatch {
         return this.stopped != null
     }
     getTime() {
-        if (!this.isStopped){
+        if (!this.isStopped()){
             throw new Error("StopWatch has not been stopped")
         }
         return this.stopped - this.started
