@@ -1,5 +1,6 @@
 const axios = require('axios');
 const loggerFactory = require('../LoggerFactory')
+const StopWatch = require('../util/StopWatch')
 
 const log = loggerFactory.createLogger()
 
@@ -18,6 +19,7 @@ class OpenAI {
      * @returns {Promise<string>} - The AI-generated review comments
      */
     aiCodeReview = async (diffText, model = defaultModel, max_tokens = defaultTokenCount) => {
+        const stopWatch = new StopWatch().start()
         const prompt = `
         Analyze the diff and respond in this exact JSON format:
         {
@@ -38,13 +40,15 @@ class OpenAI {
         ${diffText}
         `;
         
-        model = model?.length > 0 ? model : null;
+        model = model?.length > 0 ? model : defaultModel;
+
+        log.info(`Chatting with OpenAI model ${model}...`)
 
         try {
             const response = await axios.post(
                 'https://api.openai.com/v1/chat/completions',
                 {
-                    model: model ?? defaultModel,
+                    model,
                     messages: [
                         {
                             role: 'system',
@@ -66,6 +70,10 @@ class OpenAI {
                     },
                 }
             );
+
+            const timeInMs = stopWatch.stop().getTime()
+            log.info(`OpenAI response received. Time elapsed: ${timeInMs} ms`);
+
             log.debug("===========================")
             log.debug("# OpenAI response data...")
             log.debug(JSON.stringify(response.data))

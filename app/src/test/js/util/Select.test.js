@@ -33,7 +33,8 @@ describe('Select', () => {
 
     it.each([
         ["string", [v => v.startsWith('s'), v => v.endsWith('g')], "string"],
-        [123, [v => v > 100, v => v < 200], 123]
+        [123, [v => v > 100, v => v < 200], 123],
+        [123, [v => v > 100, v => v > 200], null]
     ])('should support multiple filters', (value, filters, expected) => {
         var selected = select(value)
         for (f of filters) {

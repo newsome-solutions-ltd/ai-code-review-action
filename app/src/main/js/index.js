@@ -18,7 +18,7 @@ const validate = (value, validator, message) => {
             process.exit(1);
         }
     } catch (error) {
-        log.error(`❌ ${message} [value: ${value}] - error occurred ${JSON.stringify(error)}`);
+        log.error(`❌ ${message} [value: ${value}] - error occurred: ${JSON.stringify(error)}`);
         process.exit(1);
     }
 }
@@ -56,8 +56,9 @@ async function main() {
         log.debug(`OpenAPI response: ${JSON.stringify(review)}`)
         await gitHubService.addLabelsToPR(config.repo, config.prNumber, config.githubToken, [config.label])
         await gitHubService.addPRComment(config.repo, config.prNumber, config.githubToken, review.summary, review.comments)
+        log.info(`✅ PR review complete. Please review the comments.`)
     } catch (error) {
-        log.error(`PR Review Action failed: ${error.message}`)
+        log.error(`❌ PR Review Action failed: ${JSON.stringify(error)}`)
         throw error
     }
 }

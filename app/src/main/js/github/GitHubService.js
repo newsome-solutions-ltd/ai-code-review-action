@@ -12,7 +12,7 @@ var gitHubService = {
      * @param {string} githubToken - GitHub token for authentication
      * @returns {Promise<string>} - PR diff contents
      */
-    fetchPRDiff: async function fetchPRDiff(repo, prNumber, githubToken) {
+    fetchPRDiff: async function (repo, prNumber, githubToken) {
         try {
             const prResponse = await axios.get(`https://api.github.com/repos/${repo}/pulls/${prNumber}`, {
                 headers: {
@@ -34,12 +34,12 @@ var gitHubService = {
             path: comment.file,
             body: comment.body,
             line: comment.line,
-            side: (lineComments.side == 'OLD') ? 'LEFT' : 'RIGHT' // 'RIGHT' for new line, 'LEFT' for original
+            side: (lineComments.side == 'OLD') ? 'LEFT' : 'RIGHT'
         }));
 
         const payload = {
             body: `### 🧠 AI Review Summary\n\n${summary}`,
-            event: 'COMMENT', // or 'APPROVE' if you want it to auto-approve
+            event: 'COMMENT',
             comments
         };
 
