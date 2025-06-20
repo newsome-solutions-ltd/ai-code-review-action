@@ -35,8 +35,8 @@ jobs:
         name: Check dist
         run: |
           npx ncc build src/main/js/index.js -o tmp --minify
-          actual_hash=$(md5 -q dist/index.js)
-          expected_hash=$(md5 -q tmp/index.js)
+          actual_hash=$(sha256sum dist/index.js | awk '{print $1}')
+          expected_hash=$(sha256sum tmp/index.js | awk '{print $1}')
 
           echo "Expected hash: $expected_hash"
           echo "Actual hash:   $actual_hash"
