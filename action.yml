@@ -2,12 +2,30 @@
 name: 'AI Code review'
 description: 'Uses AI to provide assisted summarisation and feedback for Pull requests'
 inputs:
-  temp:
-    description: 'TODO'
+  pr_number:
+    description: 'The Pull Request number'
+    required: true
+  repository:
+    description: 'The Github repository'
+    required: true
+  token:
+    description: 'The Github token to use'
+    required: true
+  openai_api_key:
+    description: 'The OpenAPI API key'
+    required: true
+  openai_model:
+    description: 'The OpenAPI model to use'
     required: false
-    default: '.'
+  openai_max_tokens:
+    description: 'The max number of tokens to return in the code review response'
+    required: false
+  reviewed_label:
+    description: 'The label to add after reviewing'
+    required: false
+  log_level:
+    description: 'The log level. One of: error, warn, info (default), debug.'
+    required: false
 runs:
-  using: 'docker'
-  image: 'Dockerfile'
-  env:
-    TEMP: TODO
+  using: 'node20'
+  main: 'dist/index.js'
