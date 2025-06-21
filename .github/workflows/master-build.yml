@@ -58,7 +58,7 @@ jobs:
         id: nextVersion
         uses: newsome-solutions-ltd/release-version-action@main
         with:
-          versionScheme: 'x'
+          versionScheme: '0.x'
 
   tag:
 
