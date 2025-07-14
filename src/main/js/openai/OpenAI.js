@@ -47,26 +47,28 @@ class OpenAI {
         model = model?.length > 0 ? model : defaultModel;
 
         log.info(`Chatting with OpenAI model ${model}...`)
+        const payload = {
+            model,
+            messages: [
+                {
+                    role: 'system',
+                    content: 'You are an expert software engineer and code reviewer.',
+                },
+                {
+                    role: 'user',
+                    content: prompt,
+                },
+            ],
+            temperature: 0.3,
+            max_tokens: max_tokens ?? defaultTokenCount,
+            response_format: { "type": "json_object" }
+        }
+        log.debug("OpenAI payload: " + JSON.stringify(payload, null, 2))
 
         try {
             const response = await axios.post(
                 'https://api.openai.com/v1/chat/completions',
-                {
-                    model,
-                    messages: [
-                        {
-                            role: 'system',
-                            content: 'You are an expert software engineer and code reviewer.',
-                        },
-                        {
-                            role: 'user',
-                            content: prompt,
-                        },
-                    ],
-                    temperature: 0.3,
-                    max_tokens: max_tokens ?? defaultTokenCount,
-                    response_format: { "type": "json_object" }
-                },
+                payload,
                 {
                     headers: {
                         Authorization: `Bearer ${this.apiKey}`,
