@@ -12,7 +12,7 @@ const log = loggerFactory.createLogger()
 
 const isNotEmpty = s => s?.trim().length > 0;
 const isNotNull = o => o != undefined && o != null
-const isNotNaN = n => !isNaN(n) && isFinite(n);
+const isNotNaN = n => !isNaN(n) && isFinite(n)
 const validate = (value, validator, message) => {
     try {
         if (!validator(value)) {
