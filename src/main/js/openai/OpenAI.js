@@ -9,6 +9,10 @@ const defaultTokenCount = 1500
 
 class OpenAI {
     constructor(apiKey) {
+        if (!apiKey || !apiKey.startsWith('sk-')) {
+            throw new Error('Invalid or missing OpenAI API key')
+        }
+        log.info('OpenAI API key provided, initializing OpenAI client...')
         this.apiKey = apiKey
     }
     /**
