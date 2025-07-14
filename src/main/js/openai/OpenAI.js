@@ -52,7 +52,7 @@ class OpenAI {
                     messages: [
                         {
                             role: 'system',
-                            content: 'You are an expert sooftware engineer and code reviewer.',
+                            content: 'You are an expert software engineer and code reviewer.',
                         },
                         {
                             role: 'user',
@@ -60,7 +60,7 @@ class OpenAI {
                         },
                     ],
                     temperature: 0.3,
-                    max_tokens: max_tokens ?? defaultModel,
+                    max_tokens: max_tokens ?? defaultTokenCount,
                     response_format: { "type": "json_object" }
                 },
                 {
