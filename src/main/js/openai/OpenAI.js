@@ -22,7 +22,7 @@ class OpenAI {
      * @param {number} max_tokens - Max number of tokens (default: 1500)
      * @returns {Promise<string>} - The AI-generated review comments
      */
-    aiCodeReview = async (diffText, model = defaultModel, max_tokens = defaultTokenCount) => {
+    aiCodeReview = async (diffText, model, max_tokens) => {
         const stopWatch = new StopWatch().start()
         const prompt = `
         Analyze the diff and respond in this exact JSON format:
@@ -44,8 +44,9 @@ class OpenAI {
         ${diffText}
         `;
         
-        model = model?.length > 0 ? model : defaultModel;
+        model = model?.length > 0 ? model : defaultModel
 
+        log.debug(`max_tokens: ${max_tokens} [type: ${typeof max_tokens}]`)
         log.info(`Chatting with OpenAI model ${model}...`)
         const payload = {
             model,
