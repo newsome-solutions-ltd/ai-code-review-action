@@ -12,6 +12,7 @@ const log = loggerFactory.createLogger()
 
 const isNotEmpty = s => s?.trim().length > 0;
 const isNotNull = o => o != undefined && o != null
+const isNotNaN = n => !isNaN(n) && isFinite(n);
 const validate = (value, validator, message) => {
     try {
         if (!validator(value)) {
@@ -32,7 +33,7 @@ class Configuration {
         this.openAiApiKey = actions.getInput('openai_api_key')
         this.label = select(actions.getInput('reviewed_label')).filter(isNotEmpty).orElse("ai-reviewed")
         this.model = select(actions.getInput('openai_model')).filter(isNotEmpty).orElse('gpt-4o')
-        this.maxTokens = select(actions.getInput('openai_max_tokens')).filter(isNotEmpty).map(parseInt).orElse(1500)
+        this.maxTokens = select(actions.getInput('openai_max_tokens')).filter(isNotEmpty).map(parseInt).filter(isNotNaN).orElse(1500)
     }
 }
 
