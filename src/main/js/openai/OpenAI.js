@@ -89,7 +89,7 @@ class OpenAI {
 
             return JSON.parse(response.data.choices[0].message.content);
         } catch (error) {
-            log.error('❌ Failed to fetch AI review:', JSON.stringify(error));
+            log.error('❌ Failed to fetch AI review:' + JSON.stringify(error));
             throw new Error('AI Code Review API request failed.');
         }
     }
