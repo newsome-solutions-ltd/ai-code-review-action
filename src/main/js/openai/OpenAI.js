@@ -24,7 +24,7 @@ class OpenAI {
      */
     aiCodeReview = async (diffText, model, max_tokens) => {
         const stopWatch = new StopWatch().start()
-        const prompt = `
+        const input = `
         Analyze the diff and respond in this exact JSON format:
         {
         "summary": "One-paragraph summary of what this PR does",
@@ -50,25 +50,17 @@ class OpenAI {
         log.info(`Chatting with OpenAI model ${model}...`)
         const payload = {
             model,
-            messages: [
-                {
-                    role: 'system',
-                    content: 'You are an expert software engineer and code reviewer.',
-                },
-                {
-                    role: 'user',
-                    content: prompt,
-                },
-            ],
+            instructions: 'You are an expert software engineer and code reviewer.',
+            input,
             temperature: 0.3,
-            max_tokens: max_tokens ?? defaultTokenCount,
-            response_format: { "type": "json_object" }
+            max_output_tokens: max_tokens ?? defaultTokenCount,
+            text: { format: { type: "json_object" } }
         }
         log.debug("OpenAI payload: " + JSON.stringify(payload, null, 2))
 
         try {
             const response = await axios.post(
-                'https://api.openai.com/v1/chat/completions',
+                'https://api.openai.com/v1/responses',
                 payload,
                 {
                     headers: {
@@ -87,10 +79,11 @@ class OpenAI {
                 log.debug(JSON.stringify(response.data))
             }
 
-            return JSON.parse(response.data.choices[0].message.content);
+            return JSON.parse(response.data.output[0].content[0].text);
         } catch (error) {
-            log.error('❌ Failed to fetch AI review:' + JSON.stringify(error));
-            throw new Error('AI Code Review API request failed.');
+            var errorMessage = error?.message + ": " + (error?.response ? JSON.stringify(error.response.data) : "Unknown error")
+            log.error(`❌ Failed to fetch AI review: ${errorMessage}`)
+            throw new Error('AI Code Review API request failed.')
         }
     }
 }
