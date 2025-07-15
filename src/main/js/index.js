@@ -37,6 +37,15 @@ class Configuration {
     }
 }
 
+async function isAlreadyReviewed(repo, prNumber, githubToken, label) {
+    var labels = await gitHubService.fetchPRLabels(repo, prNumber, githubToken)
+    if (labels.includes(label)) {
+        log.debug(`PR already has label '${label}' (full list: ${labels}). Skipping AI review.`)
+        return true
+    }
+    return false
+}
+
 async function main() {
     const config = new Configuration()
 
@@ -51,6 +60,10 @@ async function main() {
     const openai = new OpenAI(config.openAiApiKey)
 
     try {
+        if (await isAlreadyReviewed(config.repo, config.prNumber, config.githubToken, config.label)) {
+            log.info(`✅ PR already reviewed. Skipping AI review.`)
+            return
+        }
         const diff = await gitHubService.fetchPRDiff(config.repo, config.prNumber, config.githubToken)
         log.debug(`Fetched PR Diff: ${diff}`)
 
