@@ -5,7 +5,6 @@ const log = loggerFactory.createLogger();
 
 var gitHubService = {
 
-
     /**
      * Fetches the diff of a GitHub Pull Request
      * @param {string} repo - Repository name in format "owner/repo"
@@ -75,6 +74,29 @@ var gitHubService = {
                 }
             }
         );
+    },
+
+    /**
+     * Fetches labels for a pull request.
+     * @param {string} repo - Repository name in format "owner/repo"
+     * @param {number} prNumber - Pull request number
+     * @param {string} githubToken - GitHub token for authentication
+     * @returns {Promise<string[]>} - Array of label names
+     * @throws {Error} - If fetching labels fails
+     */
+    fetchPRLabels: async function (repo, prNumber, githubToken) {
+        try {
+            const response = await axios.get(`https://api.github.com/repos/${repo}/issues/${prNumber}/labels`, {
+                headers: {
+                    Authorization: `Bearer ${githubToken}`,
+                    Accept: 'application/vnd.github.v3+json'
+                }
+            });
+            return response.data.map(label => label.name);
+        } catch (error) {
+            log.error('Error fetching PR labels:', error.response?.data || error.message);
+            throw new Error('Failed to fetch PR labels');
+        }
     }
 
 }

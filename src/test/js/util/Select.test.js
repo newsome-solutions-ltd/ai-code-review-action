@@ -63,4 +63,11 @@ describe('Select', () => {
         expect(selected).toEqual(123)
     })
 
+    it("should ignore map function if preceding filter results in null value", () => {
+        const isNotEmpty = s => s?.trim().length > 0;
+        const isNotNaN = n => !isNaN(n) && isFinite(n)
+        const value = select('').filter(isNotEmpty).map(parseInt).filter(isNotNaN).orElse(1500)
+        expect(value).toEqual(1500)
+    })
+
 });
