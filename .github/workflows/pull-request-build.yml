@@ -44,6 +44,7 @@ jobs:
           if [ "$expected_hash" != "$actual_hash" ]; then
             echo "⚠️ The dist/index.js file is out of sync with the source, compiling..."
             npm run package
+            git fetch origin ${{ github.head_ref }}
             git checkout ${{ github.head_ref }}
             git pull
             git config user.name "github-actions"
