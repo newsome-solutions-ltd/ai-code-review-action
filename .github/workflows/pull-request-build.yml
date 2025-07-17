@@ -29,5 +29,5 @@ jobs:
     uses: newsome-solutions-ltd/developer-services-workflows/.github/workflows/github_action_node_build.yaml@feature/39-node20-action-workflows
     if: github.event_name == 'pull_request'
     with:
-      github_branch: ${{ github.head_ref }}
+      git_branch: ${{ github.head_ref }}
     
