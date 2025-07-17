@@ -44,11 +44,13 @@ jobs:
           if [ "$expected_hash" != "$actual_hash" ]; then
             echo "⚠️ The dist/index.js file is out of sync with the source, compiling..."
             npm run package
+            git checkout ${{ github.head_ref }}
+            git pull
             git config user.name "github-actions"
             git config user.email "github-actions@github.com"
             git add dist/index.js
             git commit -m "Auto-build dist/index.js"
-            echo "✅ dist/index.js is now up to date, pusing changes to branch ${{ github.head_ref }}..."
+            echo "✅ dist/index.js is now up to date, pushing changes to branch ${{ github.head_ref }}..."
             git push origin HEAD:${{ github.head_ref }}
           else
             echo "✅ dist/index.js is up to date, skipping package step..."
