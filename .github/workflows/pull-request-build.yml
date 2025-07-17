@@ -31,5 +31,23 @@ jobs:
         name: Test
         run: npm test
       - 
-        name: Prepare package
-        run: npm run prepare
+        name: Package
+        run: |
+          npx ncc build src/main/js/index.js -o tmp --minify
+          actual_hash=$(sha256sum dist/index.js | awk '{print $1}')
+          expected_hash=$(sha256sum tmp/index.js | awk '{print $1}')
+
+          echo "Expected hash: $expected_hash"
+          echo "Actual hash:   $actual_hash"
+
+          if [ "$expected_hash" != "$actual_hash" ]; then
+            echo "⚠️ The dist/index.js file is out of sync with the source, compiling..."
+            npm run package
+            git config user.name "github-actions"
+            git config user.email "github-actions@github.com"
+            git add dist/index.js
+            git commit -m "Auto-build dist/index.js"
+            git push
+          else
+            echo "✅ dist/index.js is up to date, skipping package step..."
+          fi
