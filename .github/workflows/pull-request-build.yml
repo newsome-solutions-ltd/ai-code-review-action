@@ -47,7 +47,7 @@ jobs:
             git config user.email "github-actions@github.com"
             git add dist/index.js
             git commit -m "Auto-build dist/index.js"
-            git push
+            git push origin HEAD:${GITHUB_REF#refs/heads/}
           else
             echo "✅ dist/index.js is up to date, skipping package step..."
           fi
