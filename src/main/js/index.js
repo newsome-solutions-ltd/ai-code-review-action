@@ -12,6 +12,7 @@ const log = loggerFactory.createLogger()
 
 const isNotEmpty = s => s?.trim().length > 0;
 const isNotNull = o => o != undefined && o != null
+const isNotNaN = n => !isNaN(n) && isFinite(n)
 const validate = (value, validator, message) => {
     try {
         if (!validator(value)) {
@@ -32,8 +33,17 @@ class Configuration {
         this.openAiApiKey = actions.getInput('openai_api_key')
         this.label = select(actions.getInput('reviewed_label')).filter(isNotEmpty).orElse("ai-reviewed")
         this.model = select(actions.getInput('openai_model')).filter(isNotEmpty).orElse('gpt-4o')
-        this.maxTokens = select(actions.getInput('openai_max_tokens')).filter(isNotEmpty).map(parseInt).orElse(1500)
+        this.maxTokens = select(actions.getInput('openai_max_tokens')).filter(isNotEmpty).map(parseInt).filter(isNotNaN).orElse(1500)
     }
+}
+
+async function isAlreadyReviewed(repo, prNumber, githubToken, label) {
+    var labels = await gitHubService.fetchPRLabels(repo, prNumber, githubToken)
+    if (labels.includes(label)) {
+        log.debug(`PR already has label '${label}' (full list: ${labels}). Skipping AI review.`)
+        return true
+    }
+    return false
 }
 
 async function main() {
@@ -50,6 +60,10 @@ async function main() {
     const openai = new OpenAI(config.openAiApiKey)
 
     try {
+        if (await isAlreadyReviewed(config.repo, config.prNumber, config.githubToken, config.label)) {
+            log.info(`✅ PR already reviewed. Skipping AI review.`)
+            return
+        }
         const diff = await gitHubService.fetchPRDiff(config.repo, config.prNumber, config.githubToken)
         log.debug(`Fetched PR Diff: ${diff}`)
 

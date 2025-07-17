@@ -9,6 +9,10 @@ const defaultTokenCount = 1500
 
 class OpenAI {
     constructor(apiKey) {
+        if (!apiKey || !apiKey.startsWith('sk-')) {
+            throw new Error('Invalid or missing OpenAI API key')
+        }
+        log.info('OpenAI API key provided, initializing OpenAI client...')
         this.apiKey = apiKey
     }
     /**
@@ -18,9 +22,9 @@ class OpenAI {
      * @param {number} max_tokens - Max number of tokens (default: 1500)
      * @returns {Promise<string>} - The AI-generated review comments
      */
-    aiCodeReview = async (diffText, model = defaultModel, max_tokens = defaultTokenCount) => {
+    aiCodeReview = async (diffText, model, max_tokens) => {
         const stopWatch = new StopWatch().start()
-        const prompt = `
+        const input = `
         Analyze the diff and respond in this exact JSON format:
         {
         "summary": "One-paragraph summary of what this PR does",
@@ -40,29 +44,24 @@ class OpenAI {
         ${diffText}
         `;
         
-        model = model?.length > 0 ? model : defaultModel;
+        model = model?.length > 0 ? model : defaultModel
 
+        log.debug(`max_tokens: ${max_tokens} [type: ${typeof max_tokens}]`)
         log.info(`Chatting with OpenAI model ${model}...`)
+        const payload = {
+            model,
+            instructions: 'You are an expert software engineer and code reviewer.',
+            input,
+            temperature: 0.3,
+            max_output_tokens: max_tokens ?? defaultTokenCount,
+            text: { format: { type: "json_object" } }
+        }
+        log.debug("OpenAI payload: " + JSON.stringify(payload, null, 2))
 
         try {
             const response = await axios.post(
-                'https://api.openai.com/v1/chat/completions',
-                {
-                    model,
-                    messages: [
-                        {
-                            role: 'system',
-                            content: 'You are an expert sooftware engineer and code reviewer.',
-                        },
-                        {
-                            role: 'user',
-                            content: prompt,
-                        },
-                    ],
-                    temperature: 0.3,
-                    max_tokens: max_tokens ?? defaultModel,
-                    response_format: { "type": "json_object" }
-                },
+                'https://api.openai.com/v1/responses',
+                payload,
                 {
                     headers: {
                         Authorization: `Bearer ${this.apiKey}`,
@@ -80,10 +79,11 @@ class OpenAI {
                 log.debug(JSON.stringify(response.data))
             }
 
-            return JSON.parse(response.data.choices[0].message.content);
+            return JSON.parse(response.data.output[0].content[0].text);
         } catch (error) {
-            log.error('❌ Failed to fetch AI review:', JSON.stringify(error));
-            throw new Error('AI Code Review API request failed.');
+            var errorMessage = error?.message + ": " + (error?.response ? JSON.stringify(error.response.data) : "Unknown error")
+            log.error(`❌ Failed to fetch AI review: ${errorMessage}`)
+            throw new Error('AI Code Review API request failed.')
         }
     }
 }
