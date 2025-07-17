@@ -21,7 +21,7 @@ jobs:
     steps:
       - 
         name: Checkout the branch
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - 
         name: Get tags
         run: git fetch --tags origin
@@ -37,22 +37,8 @@ jobs:
         name: Test
         run: npm test
       - 
-        name: Check dist
-        run: |
-          npx ncc build src/main/js/index.js -o tmp --minify
-          actual_hash=$(sha256sum dist/index.js | awk '{print $1}')
-          expected_hash=$(sha256sum tmp/index.js | awk '{print $1}')
-
-          echo "Expected hash: $expected_hash"
-          echo "Actual hash:   $actual_hash"
-
-          if [ "$expected_hash" != "$actual_hash" ]; then
-            echo "❌ The dist/index.js file is out of sync with the source."
-            echo "💡 Please run \`npm run package\` and commit the result."
-            exit 1
-          else
-            echo "✅ dist/index.js is up to date."
-          fi
+        name: Prepare package
+        run: npm run prepare
       - 
         name: Determine next version number
         id: nextVersion
@@ -92,11 +78,10 @@ jobs:
       - 
         name: Create Release
         id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+        uses: softprops/action-gh-release@v2
         with:
+          token: ${{ secrets.GITHUB_TOKEN }}
           tag_name: 'v${{ needs.build.outputs.imageTag }}'
-          release_name: 'Release ver. ${{ needs.build.outputs.imageTag }}'
+          name: 'v${{ needs.build.outputs.imageTag }}'
           draft: false
           prerelease: false
