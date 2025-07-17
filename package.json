@@ -3,7 +3,6 @@
   "version": "0.0.1",
   "main": "src/main/js/index.js",
   "scripts": {
-    "prepare": "npm run package",
     "checks": "npm run audit && npm run lint",
     "audit": "npm audit --audit-level=high",
     "lint": "eslint src --ext .js",
