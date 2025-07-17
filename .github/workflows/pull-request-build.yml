@@ -8,51 +8,26 @@ on:
       - 'main'
       - 'release/**'
 
-env:
-  NODE_VERSION: '20'
-
 jobs:
+  review:
+    permissions:
+      contents: 'read'
+      pull-requests:  'write'
+
+    uses: newsome-solutions-ltd/developer-services-workflows/.github/workflows/pull_request_ai_review.yaml@main
+    with:
+      pr_number: ${{ github.event.pull_request.number }}
+      repository: ${{ github.repository }}
+    secrets:
+      gh_token: ${{ secrets.GITHUB_TOKEN }}
+      openai_api_key: ${{ secrets.OPENAI_API_KEY }}
+
   build:
-    runs-on: ubuntu-latest
+    permissions:
+      contents: 'write'
     
-    steps:
-      - 
-        name: Checkout the branch
-        uses: actions/checkout@v4
-      - 
-        name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-      - 
-        name: Install Node modules
-        run: npm install
-      - 
-        name: Test
-        run: npm test
-      - 
-        name: Package
-        if: github.event_name == 'pull_request'
-        run: |
-          npx ncc build src/main/js/index.js -o tmp --minify
-          actual_hash=$(sha256sum dist/index.js | awk '{print $1}')
-          expected_hash=$(sha256sum tmp/index.js | awk '{print $1}')
-
-          echo "Expected hash: $expected_hash"
-          echo "Actual hash:   $actual_hash"
-
-          if [ "$expected_hash" != "$actual_hash" ]; then
-            echo "⚠️ The dist/index.js file is out of sync with the source, compiling..."
-            npm run package
-            git fetch origin ${{ github.head_ref }}
-            git checkout ${{ github.head_ref }}
-            git pull
-            git config user.name "github-actions"
-            git config user.email "github-actions@github.com"
-            git add dist/index.js
-            git commit -m "Auto-build dist/index.js"
-            echo "✅ dist/index.js is now up to date, pushing changes to branch ${{ github.head_ref }}..."
-            git push origin HEAD:${{ github.head_ref }}
-          else
-            echo "✅ dist/index.js is up to date, skipping package step..."
-          fi
+    uses: newsome-solutions-ltd/developer-services-workflows/.github/workflows/github_action_node_build.yaml@feature/39-node20-action-workflows
+    if: github.event_name == 'pull_request'
+    with:
+      github_branch: ${{ github.head_ref }}
+    
