@@ -32,6 +32,7 @@ jobs:
         run: npm test
       - 
         name: Package
+        if: github.event_name == 'pull_request'
         run: |
           npx ncc build src/main/js/index.js -o tmp --minify
           actual_hash=$(sha256sum dist/index.js | awk '{print $1}')
@@ -47,7 +48,7 @@ jobs:
             git config user.email "github-actions@github.com"
             git add dist/index.js
             git commit -m "Auto-build dist/index.js"
-            git push origin HEAD:${GITHUB_REF#refs/heads/}
+            git push origin HEAD:${{ github.head_ref || github.ref_name }}
           else
             echo "✅ dist/index.js is up to date, skipping package step..."
           fi
