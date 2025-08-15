@@ -21,7 +21,7 @@ jobs:
     steps:
       - 
         name: Checkout the branch
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - 
         name: Get tags
         run: git fetch --tags origin
@@ -69,7 +69,7 @@ jobs:
     steps:
       -
         name: Create tag
-        uses: actions/github-script@v5
+        uses: actions/github-script@v7
         with:
           script: |
             github.rest.git.createRef({
@@ -88,7 +88,7 @@ jobs:
     steps:
       - 
         name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - 
         name: Create Release
         id: create_release
